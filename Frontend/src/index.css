@@ -1,7 +1,14 @@
 * {
-  margin: 0%;
-  padding: 0%;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+}
+
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-highlight: rgba(255, 255, 255, 0.35);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html,
@@ -11,8 +18,8 @@ body,
   width: 100%;
 }
 
-html {
-  background-color: #212121;
+body {
+  background: radial-gradient(circle at top, #1b1f2a, #0b0d12);
   font-family:
     system-ui,
     -apple-system,
@@ -25,27 +32,388 @@ html {
     "Open Sans",
     "Helvetica Neue",
     sans-serif;
+  color: #ffffff;
 }
 
-.notes {
+.app-wrapper {
+  min-height: 100%;
   display: flex;
-  gap: 1rem;
-  padding-block: 1rem;
-  padding-inline: 3rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  animation: fadeApp 0.6s var(--ease);
 }
 
-.note {
-  background-color: #494949;
-  padding: 1rem;
-  border-radius: 0.7rem;
-  max-width: 20rem;
-  color: rgb(255, 253, 249);
+@keyframes fadeApp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar {
+  height: 64px;
+  padding: 0 2.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: var(--glass-bg);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.logo {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #ffd28a;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-user {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.nav-btn {
+  padding: 0.45rem 1rem;
+  border-radius: 0.6rem;
+  border: none;
+  cursor: pointer;
+
+  background: rgba(255, 210, 138, 0.9);
+  color: #000;
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  transition:
+    transform 0.25s var(--ease),
+    box-shadow 0.25s var(--ease);
+}
+
+.nav-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 210, 138, 0.35);
+}
+
+.nav-btn:active {
+  transform: scale(0.96);
 }
 
 .note-create-form {
+  padding: 1.2rem 2.5rem;
   display: flex;
   gap: 1rem;
-  padding-inline: 3rem;
-  padding-block: 1rem;
+
+  background: var(--glass-bg);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.note-create-form input {
+  flex: 1;
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.7rem;
+  border: none;
+  outline: none;
+
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+  transition:
+    box-shadow 0.3s var(--ease),
+    transform 0.3s var(--ease),
+    background 0.3s var(--ease);
+}
+
+.note-create-form input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.note-create-form input:hover {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.note-create-form input:focus {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6),
+    0 0 25px rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.note-create-form button {
+  padding: 0.7rem 1.4rem;
+  border-radius: 0.7rem;
+  border: none;
+  cursor: pointer;
+
+  background: rgba(34, 197, 94, 0.9);
+  color: #052e16;
+  font-weight: 800;
+
+  transition:
+    transform 0.25s var(--ease),
+    box-shadow 0.25s var(--ease);
+}
+
+.note-create-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(34, 197, 94, 0.35);
+}
+
+.notes {
+  padding: 3rem 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.note {
+  position: relative;
+  padding: 1.5rem;
+  border-radius: 1.3rem;
+
+  background: var(--glass-bg);
+  backdrop-filter: blur(26px);
+  -webkit-backdrop-filter: blur(26px);
+
+  border: 1px solid var(--glass-border);
+
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px var(--glass-highlight);
+
+  transition:
+    transform 0.45s var(--ease),
+    box-shadow 0.45s var(--ease);
+}
+
+.note::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.45),
+    rgba(255, 255, 255, 0.05) 40%,
+    rgba(255, 255, 255, 0)
+  );
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.note:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow:
+    0 40px 80px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(255, 255, 255, 0.12);
+}
+
+.note h1 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 0.6rem;
+  color: #ffd28a;
+}
+
+.note p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1rem;
+}
+
+.note textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 0.8rem;
+  border-radius: 0.8rem;
+  border: none;
+  outline: none;
+
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.25),
+    0 0 20px rgba(255, 255, 255, 0.15);
+
+  animation: editPop 0.35s var(--ease);
+}
+
+@keyframes editPop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.note button {
+  padding: 0.45rem 1rem;
+  border-radius: 0.6rem;
+  border: none;
+  cursor: pointer;
+
+  font-size: 0.75rem;
+  font-weight: 800;
+  margin-right: 0.5rem;
+  margin-bottom: 0.6rem;
+
+  transition:
+    transform 0.25s var(--ease),
+    box-shadow 0.25s var(--ease);
+}
+
+.note button:hover {
+  transform: translateY(-1px);
+}
+
+.note button:active {
+  transform: scale(0.95);
+}
+
+.note button.edit {
+  background: rgba(255, 213, 79, 0.9);
+  color: #3f2d00;
+}
+
+.note button.save {
+  background: rgba(0, 230, 118, 0.9);
+  color: #003d1f;
+}
+
+.note button.cancel {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.note button.delete {
+  background: rgba(255, 59, 59, 0.9);
+  color: #fff;
+}
+
+.footer {
+  margin-top: auto;
+  padding: 1.4rem;
+  text-align: center;
+
+  background: var(--glass-bg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border-top: 1px solid var(--glass-border);
+}
+
+.footer p {
+  font-size: 0.75rem;
+  opacity: 0.75;
+  margin-bottom: 0.8rem;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+.social {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+
+  padding: 0.5rem 1rem;
+  border-radius: 0.8rem;
+
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.35),
+    0 10px 30px rgba(0, 0, 0, 0.35);
+
+  transition:
+    transform 0.35s var(--ease),
+    box-shadow 0.35s var(--ease),
+    color 0.35s ease;
+}
+
+.social i {
+  font-size: 1rem;
+}
+
+.social:hover {
+  transform: translateY(-4px) scale(1.05);
+}
+
+.social.github:hover {
+  color: #ffffff;
+  box-shadow: 0 15px 40px rgba(255, 255, 255, 0.25);
+}
+
+.social.linkedin:hover {
+  color: #0a66c2;
+  box-shadow: 0 15px 40px rgba(10, 102, 194, 0.45);
+}
+
+.social.instagram:hover {
+  color: #e1306c;
+  box-shadow: 0 15px 40px rgba(225, 48, 108, 0.45);
+}
+
+.social:active {
+  transform: scale(0.94);
+}
+
+@media (max-width: 768px) {
+  .note-create-form {
+    flex-direction: column;
+  }
+
+  .note-create-form input,
+  .note-create-form button {
+    width: 100%;
+  }
+
+  .notes {
+    padding: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .social-links {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .social {
+    justify-content: center;
+  }
 }

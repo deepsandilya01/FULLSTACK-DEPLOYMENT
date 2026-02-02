@@ -8,7 +8,7 @@ function App() {
 
   // Fetch all notes
   function fetchNotes() {
-    axios.get("http://localhost:3000/api/notes").then((res) => {
+    axios.get("https://fullstack-deployment-z3tl.onrender.com/api/notes").then((res) => {
       setNotes(res.data.notes);
     });
   }
@@ -23,7 +23,7 @@ function App() {
     const { title, description } = e.target.elements;
 
     axios
-      .post("http://localhost:3000/api/notes", {
+      .post("https://fullstack-deployment-z3tl.onrender.com/api/notes", {
         title: title.value,
         description: description.value,
       })
@@ -36,14 +36,14 @@ function App() {
   // Delete note
   function handleDeleteNote(noteId) {
     axios
-      .delete("http://localhost:3000/api/notes/" + noteId)
+      .delete("https://fullstack-deployment-z3tl.onrender.com/api/notes/" + noteId)
       .then(() => fetchNotes());
   }
 
   // Update description
   function updateDesc(id, newDesc) {
     axios
-      .patch("http://localhost:3000/api/notes/" + id, {
+      .patch("https://fullstack-deployment-z3tl.onrender.com/api/notes/" + id, {
         description: newDesc,
       })
       .then(() => {

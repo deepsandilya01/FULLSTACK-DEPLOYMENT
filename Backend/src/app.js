@@ -8,7 +8,12 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "*", // ya frontend Render URL
+    credentials: true,
+  }),
+);
 app.use(express.json());
 /**
  * http://localhost:3000/assets/index-DLB1m1Wg.js
@@ -80,7 +85,7 @@ app.patch("/api/notes/:id", async (req, res) => {
 });
 
 console.log(__dirname);
-  
+
 app.use("*name", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "/public/index.html"));
 });
